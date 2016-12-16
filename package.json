@@ -1,0 +1,12 @@
+{
+  "name": "marketing-scripts",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "publish": "DEBUG=nightmare:actions* node scripts/auto_publish.js"
+  },
+  "dependencies": {
+    "js-yaml": "^3.7.0",
+    "nightmare": "^2.8.1"
+  }
+}
