@@ -1,42 +1,34 @@
-const TIMES_TO_DELAY = 3000 // need decrease/increase deps on network.
+const TIMES_TO_DELAY = 1500 // need decrease/increase deps on network.
 
 function publish(nightmare, { username, password }, { meta, content }) {
   nightmare
     .goto('https://www.v2ex.com/')
-    .exists('.user.avatar') // already login?
+    .exists('img.avatar') // already login?
     .then(isLogin => {
       console.info('already login?', isLogin)
       if (!isLogin) {
         nightmare
-          .goto('https://www.v2ex.com/')
-          .insert('[name="username"]', username)
-          .insert('[name="password"]', password)
+          .goto('https://www.v2ex.com/signin')
+          .insert('[placeholder="用户名或电子邮箱地址"]', username)
+          .insert('[type="password"]', password)
           .click('[type="submit"]')
+          .wait(TIMES_TO_DELAY) // login need some times
       }
       nightmare
-        .wait('a.btn.btn-large.btn-success')
-        .click('a.btn.btn-large.btn-success')
-        .wait('a.new-note-link')
-        .click('a.new-note-link')
-        .wait(TIMES_TO_DELAY) // waiting to create new note otherwise will override original article
-        .wait('#note_title')
-        .insert('#note_title', meta.title)
-        .insert('textarea.text.mousetrap', content)
-        .wait(TIMES_TO_DELAY) // publish button will hidden when saving draft
-        .wait('#publish-button')
-        .click('#publish-button')
-        .wait(TIMES_TO_DELAY * 2) // publish process need some times
-        .evaluate(() => {
-          const success = $('h3:contains("文章发布成功")')[0]
-          if (success) {
-            const title = $('.text-info')[0]
-            console.info('文章发布成功', title)
-            return `[${title.text}](${title.href})`
-          }
-          throw new Error('文章发布异常...')
-        })
+        .goto('https://www.v2ex.com/new')
+        .wait('#topic_title')
+        .insert('#topic_title', meta.title)
+        .evaluate((content) => {
+          const textArea = document.getElementById('editor')
+          const editor = CodeMirror.fromTextArea(textArea)
+          editor.getDoc().setValue(content)
+          
+          $('button.super.normal.button').click()
+        }, content)
+        .wait(TIMES_TO_DELAY) // publish need some times
+        .url()
         .end()
-        .then(title => console.info(`发布成功 => ${title}`))
+        .then(url => console.info(`发布成功 => [${meta.title}](${url})`))
         .catch(err => console.error(err))
     })
 }

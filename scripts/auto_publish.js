@@ -13,7 +13,7 @@ const article = {
 
 const { jianshu, segmentfault, zhihu, v2ex } = config.accounts
 
-require('./jianshu')(nightmare, jianshu, article)
-require('./segmentfault')(nightmare, segmentfault, article)
+// require('./jianshu')(nightmare, jianshu, article)
+// require('./segmentfault')(nightmare, segmentfault, article)
 require('./v2ex')(nightmare, v2ex, article)
 
