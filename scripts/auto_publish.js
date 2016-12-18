@@ -11,10 +11,11 @@ const article = {
   content: result.slice(2).join('---')
 }
 
-const { jianshu, segmentfault, zhihu, v2ex, juejin } = config.accounts
+const { jianshu, segmentfault, zhihu, v2ex, juejin, oschina } = config.accounts
 
 // require('./jianshu')(nightmare, jianshu, article)
 // require('./segmentfault')(nightmare, segmentfault, article)
 // require('./v2ex')(nightmare, v2ex, article)
-require('./juejin')(nightmare, juejin, article)
+// require('./juejin')(nightmare, juejin, article)
+require('./oschina')(nightmare, oschina, article)
 
