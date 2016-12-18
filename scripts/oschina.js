@@ -16,9 +16,7 @@ function publish(nightmare, {username, password}, {meta, content}) {
       }
       // will redirect to write page directly
       nightmare
-        .goto('https://my.oschina.net/JimmyLv/blog/edit') // this way will logout, no idea
-        // .click('.nav-action.dropdown') // this will new tab
-        // .click('li[_v-c254183c]:nth-child(2)')
+        .goto('https://my.oschina.net/JimmyLv/blog/edit')
         .wait('input#title')
         .insert('input#title', meta.title)
         .insert('textarea#mdeditor', content)
